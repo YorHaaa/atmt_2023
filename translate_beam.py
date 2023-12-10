@@ -32,6 +32,7 @@ def get_args():
     parser.add_argument('--beam-size', default=5, type=int, help='number of hypotheses expanded in beam search')
     # alpha hyperparameter for length normalization (described as lp in https://arxiv.org/pdf/1609.08144.pdf equation 14)
     parser.add_argument('--alpha', default=0.0, type=float, help='alpha for softer length normalization')
+    parser.add_argument('--regular-lambda', default=0.0, type=float, help='lambda for UID-Decoding')
 
     return parser.parse_args()
 
@@ -80,8 +81,12 @@ def main(args):
 
         with torch.no_grad():
             # Compute the encoder output
-            encoder_out = model.encoder(sample['src_tokens'], sample['src_lengths'])
+            encoder_out = model.encoder(sample['src_tokens'],sample ['src_lengths'])
             # __QUESTION 1: What is "go_slice" used for and what do its dimensions represent?
+            ''''
+            go_slice is a tensor used as the initial input of the decoder. Its dimension is (batch size, 1), which means that each sentence has only one word. 
+            This word is eos_idx (</s>), which is used to tell the decoder to start. Generate new sentences.
+            '''
             go_slice = \
                 torch.ones(sample['src_tokens'].shape[0], 1).fill_(tgt_dict.eos_idx).type_as(sample['src_tokens'])
             if args.cuda:
@@ -118,7 +123,7 @@ def main(args):
                     mask = None
 
                 node = BeamSearchNode(searches[i], emb, lstm_out, final_hidden, final_cell,
-                                      mask, torch.cat((go_slice[i], next_word)), log_p, 1)
+                                      mask, torch.cat((go_slice[i], next_word)), log_p, 1, log_p**2)
                 # __QUESTION 3: Why do we add the node with a negative score?
                 searches[i].add(-node.eval(args.alpha), node)
 
@@ -167,7 +172,7 @@ def main(args):
                     node = nodes[i]
                     search = node.search
 
-                    # __QUESTION 4: How are "add" and "add_final" different? 
+                    # __QUESTION 4: How are "add" and "add_final" different?
                     # What would happen if we did not make this distinction?
 
                     # Store the node as final if EOS is generated
@@ -175,8 +180,7 @@ def main(args):
                         node = BeamSearchNode(
                             search, node.emb, node.lstm_out, node.final_hidden,
                             node.final_cell, node.mask, torch.cat((prev_words[i][0].view([1]),
-                            next_word)), node.logp, node.length
-                            )
+                            next_word)), node.logp, node.length,node.squared_regular)
                         search.add_final(-node.eval(args.alpha), node)
 
                     # Add the node to current nodes for next iteration
@@ -184,8 +188,7 @@ def main(args):
                         node = BeamSearchNode(
                             search, node.emb, node.lstm_out, node.final_hidden,
                             node.final_cell, node.mask, torch.cat((prev_words[i][0].view([1]),
-                            next_word)), node.logp + log_p, node.length + 1
-                            )
+                            next_word)), node.logp + log_p, node.length + 1, node.squared_regular+(node.logp + log_p) ** 2)
                         search.add(-node.eval(args.alpha), node)
 
             # #import pdb;pdb.set_trace()
@@ -195,7 +198,7 @@ def main(args):
                 search.prune()
 
         # Segment into sentences
-        best_sents = torch.stack([search.get_best()[1].sequence[1:].cpu() for search in searches])
+        best_sents = torch.stack([search.get_best(args.regular_lambda)[1].sequence[1:].cpu() for search in searches])
         decoded_batch = best_sents.numpy()
         #import pdb;pdb.set_trace()
 
