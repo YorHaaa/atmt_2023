@@ -97,4 +97,4 @@ class BeamSearchNode(object):
         
         """
         normalizer = (5 + self.length) ** alpha / (5 + 1) ** alpha
-        return self.logp - regular_lambda*self.squared_regular / normalizer
+        return (self.logp - regular_lambda*self.squared_regular) / normalizer
