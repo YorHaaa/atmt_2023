@@ -125,7 +125,7 @@ def main(args):
                 node = BeamSearchNode(searches[i], emb, lstm_out, final_hidden, final_cell,
                                       mask, torch.cat((go_slice[i], next_word)), log_p, 1, log_p**2)
                 # __QUESTION 3: Why do we add the node with a negative score?
-                searches[i].add(-node.eval(args.alpha), node)
+                searches[i].add(-node.eval(args.alpha,args.regular_lambda), node)
 
         #import pdb;pdb.set_trace()
         # Start generating further tokens until max sentence length reached
@@ -181,7 +181,7 @@ def main(args):
                             search, node.emb, node.lstm_out, node.final_hidden,
                             node.final_cell, node.mask, torch.cat((prev_words[i][0].view([1]),
                             next_word)), node.logp, node.length,node.squared_regular)
-                        search.add_final(-node.eval(args.alpha), node)
+                        search.add_final(-node.eval(args.alpha,args.regular_lambda), node)
 
                     # Add the node to current nodes for next iteration
                     else:
@@ -189,7 +189,7 @@ def main(args):
                             search, node.emb, node.lstm_out, node.final_hidden,
                             node.final_cell, node.mask, torch.cat((prev_words[i][0].view([1]),
                             next_word)), node.logp + log_p, node.length + 1, node.squared_regular+(node.logp + log_p) ** 2)
-                        search.add(-node.eval(args.alpha), node)
+                        search.add(-node.eval(args.alpha,args.regular_lambda), node)
 
             # #import pdb;pdb.set_trace()
             # __QUESTION 5: What happens internally when we prune our beams?
@@ -198,7 +198,7 @@ def main(args):
                 search.prune()
 
         # Segment into sentences
-        best_sents = torch.stack([search.get_best(args.regular_lambda)[1].sequence[1:].cpu() for search in searches])
+        best_sents = torch.stack([search.get_best()[1].sequence[1:].cpu() for search in searches])
         decoded_batch = best_sents.numpy()
         #import pdb;pdb.set_trace()
 

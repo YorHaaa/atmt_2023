@@ -1,3 +1,5 @@
+Github Link:[YorHaaa/atmt_2023: Materials for the first assignment of "Advanced Techniques of Machine Translation" @UZH (Autumn 2023). (github.com)](https://github.com/YorHaaa/atmt_2023)
+
 # 1 Experimenting with Beam Search
 
 Model Select: **The baseline of Assignment 03 (assignments/03/baseline/checkpoints)**
@@ -111,9 +113,9 @@ Model Select: **The baseline of Assignment 03 (assignments/03/baseline/checkpoin
    `````Json
    {
     "name": "BLEU",
-    "score": 16.2,
+    "score": 16.5,
     "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.3.1",
-    "verbose_score": "47.2/21.8/11.5/5.8 (BP = 1.000 ratio = 1.177 hyp_len = 4579 ref_len = 3892)",
+    "verbose_score": "47.9/22.0/11.7/6.0 (BP = 1.000 ratio = 1.164 hyp_len = 4532 ref_len = 3892)",
     "nrefs": "1",
     "case": "mixed",
     "eff": "no",
@@ -140,20 +142,21 @@ Model Select: **The baseline of Assignment 03 (assignments/03/baseline/checkpoin
    }
    `````
 
-   > We can see that the BLEU score increased about 0.3 after applying UID Decoding, and the verbose_score in all n-gram increased a little.
+   > We can see that the BLEU score increased about 0.6 after applying UID Decoding, and the verbose_score in all n-gram increased a little.
    >
    > And we can see from the result of translation
    >
    > The original beam_search:
    >
-   > <img src="C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210150625707.png" alt="image-20231210150625707" style="zoom:50%;" />
+   > 
    >
-   > <img src="C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210151244731.png" alt="image-20231210151244731" style="zoom: 33%;" />
+   > 
    >
    > The beam_search after applying UID Decoding:
    >
-   > <img src="C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210150805782.png" alt="image-20231210150805782" style="zoom:50%;" />
+   > 
    >
-   > <img src="C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210151225409.png" alt="image-20231210151225409" style="zoom:50%;" />
+   > 
    >
    > The result of beam_search after applying UID Decoding seems to be more in line with human language habits and more accurate.
+

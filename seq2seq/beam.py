@@ -37,20 +37,18 @@ class BeamSearch(object):
             nodes.append((node[0], node[2]))
         return nodes
 
-    def get_best(self, regular_lambda):
+    def get_best(self):
         """ Returns final node with the lowest negative log probability """
         # Merge EOS paths and those that were stopped by
         # max sequence length (still in nodes)
         merged = PriorityQueue()
         for _ in range(self.final.qsize()):
             node = self.final.get()
-            final_score = node[2].logp - regular_lambda*node[2].squared_regular
-            merged.put((-final_score, next(self._counter), node[2]))
+            merged.put(node)
 
         for _ in range(self.nodes.qsize()):
             node = self.nodes.get()
-            final_score = node[2].logp - regular_lambda*node[2].squared_regular
-            merged.put((-final_score, next(self._counter), node[2]))
+            merged.put(node)
 
         node = merged.get()
         node = (node[0], node[2])
@@ -88,7 +86,7 @@ class BeamSearchNode(object):
 
         self.search = search
 
-    def eval(self, alpha=0.0):
+    def eval(self, alpha=0.0, regular_lambda=0.0):
         """ Returns score of sequence up to this node 
 
         params: 
@@ -99,4 +97,4 @@ class BeamSearchNode(object):
         
         """
         normalizer = (5 + self.length) ** alpha / (5 + 1) ** alpha
-        return self.logp / normalizer
+        return self.logp - regular_lambda*self.squared_regular / normalizer
