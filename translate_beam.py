@@ -188,7 +188,7 @@ def main(args):
                         node = BeamSearchNode(
                             search, node.emb, node.lstm_out, node.final_hidden,
                             node.final_cell, node.mask, torch.cat((prev_words[i][0].view([1]),
-                            next_word)), node.logp + log_p, node.length + 1, node.squared_regular+(node.logp + log_p) ** 2)
+                            next_word)), node.logp + log_p, node.length + 1, node.squared_regular+(node.logp + log_p)**2)
                         search.add(-node.eval(args.alpha,args.regular_lambda), node)
 
             # #import pdb;pdb.set_trace()
