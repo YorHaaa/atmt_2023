@@ -105,9 +105,9 @@ The regular value sums the square of probability of each time step.
 
    ![image-20231210135305877](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210135305877.png)
 
-   **When extending the candidate sequence:**
+   **When extending the candidate sequence:** compute the square of current log_probability as the penalty value
 
-   ![image-20231210145939269](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210145939269.png)
+   ![image-20231211221643267](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231211221643267.png)
 
    > When adding the EOS token to the candidate sequence, remain the value.
 
@@ -122,9 +122,9 @@ The regular value sums the square of probability of each time step.
    `````Json
    {
     "name": "BLEU",
-    "score": 16.5,
+    "score": 19.4,
     "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.3.1",
-    "verbose_score": "47.9/22.0/11.7/6.0 (BP = 1.000 ratio = 1.164 hyp_len = 4532 ref_len = 3892)",
+    "verbose_score": "49.1/25.0/14.0/8.1 (BP = 1.000 ratio = 1.175 hyp_len = 4573 ref_len = 3892)",
     "nrefs": "1",
     "case": "mixed",
     "eff": "no",
@@ -151,19 +151,13 @@ The regular value sums the square of probability of each time step.
    }
    `````
 
-   > We can see that the BLEU score increased about 0.6 after applying UID Decoding, and the verbose_score in all n-gram increased a little.
+   > We can see that the BLEU score increased about 0.1 after applying UID Decoding
    >
    > And we can see from the result of translation(left file - after applying UID Decoding, right file - beam_search)
    >
-   > ![image-20231210165615144](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210165615144.png)
+   > ![image-20231211224153767](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231211224153767.png)
    >
-   > ![image-20231210165802561](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210165802561.png)
-   >
-   > ![image-20231210165853519](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210165853519.png)
-   >
-   > ![image-20231210170043591](C:\Users\72924\AppData\Roaming\Typora\typora-user-images\image-20231210170043591.png)
-   >
-   > The result of beam_search after applying UID Decoding seems to be more in line with human language habits and more accurate.
+   > The result of beam_search after applying UID Decoding seems to be more in line with human language habits and a little more accurate.
 
 # 4 Investigating the Diversity of Beam Search
 
@@ -212,3 +206,5 @@ I choose beam size of 5  because when beam size > 7 , there are a lot of empty s
        for i in range(len(n_best)):
            n_best_sents.append(n_best[i][1].sequence[1:].cpu())
    ```
+
+## 4.2 Discuss your findings in your PDF report and show some examples where you can see the influence of the more diverse beam search.

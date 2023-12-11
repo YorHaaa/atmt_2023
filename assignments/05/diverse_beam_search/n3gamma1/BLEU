@@ -1,9 +1,9 @@
 n_0:
 {
  "name": "BLEU",
- "score": 17.9,
+ "score": 19.6,
  "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.3.1",
- "verbose_score": "49.1/23.4/12.8/6.9 (BP = 1.000 ratio = 1.119 hyp_len = 4356 ref_len = 3892)",
+ "verbose_score": "48.6/25.1/14.5/8.3 (BP = 1.000 ratio = 1.205 hyp_len = 4689 ref_len = 3892)",
  "nrefs": "1",
  "case": "mixed",
  "eff": "no",
@@ -15,9 +15,9 @@ n_0:
 n_1:
 {
  "name": "BLEU",
- "score": 16.2,
+ "score": 17.1,
  "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.3.1",
- "verbose_score": "47.6/22.0/11.5/5.7 (BP = 1.000 ratio = 1.167 hyp_len = 4541 ref_len = 3892)",
+ "verbose_score": "45.5/22.4/12.4/6.7 (BP = 1.000 ratio = 1.284 hyp_len = 4999 ref_len = 3892)",
  "nrefs": "1",
  "case": "mixed",
  "eff": "no",
@@ -29,9 +29,9 @@ n_1:
 n_2:
 {
  "name": "BLEU",
- "score": 14.9,
+ "score": 14.8,
  "signature": "nrefs:1|case:mixed|eff:no|tok:13a|smooth:exp|version:2.3.1",
- "verbose_score": "45.5/20.6/10.5/5.1 (BP = 1.000 ratio = 1.210 hyp_len = 4711 ref_len = 3892)",
+ "verbose_score": "42.1/20.3/10.6/5.3 (BP = 1.000 ratio = 1.388 hyp_len = 5404 ref_len = 3892)",
  "nrefs": "1",
  "case": "mixed",
  "eff": "no",
